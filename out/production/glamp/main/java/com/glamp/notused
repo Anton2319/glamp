@@ -1,0 +1,38 @@
+HttpServer apache = new HttpServer();
+        apache.start();
+
+        Thread.sleep(1000);
+
+        while(apache.status().equals("Starting")) {
+            if (apache.status() == "Failed") {
+                System.out.println("Не удалось запустить Webserver Apache! Остановка");
+            }
+        }
+
+        if (apache.status()=="Running") {
+            System.out.println("Apache http сервер запущен");
+        }
+
+        MySqlServer mysql = new MySqlServer();
+        mysql.start();
+
+        Thread.sleep(1000);
+
+        while(mysql.status().equals("Starting")) {
+            if (mysql.status() == "Failed") {
+                System.out.println("Не удалось запустить сервер MySQL! Запуск без MySQL");
+            }
+        }
+
+        if (mysql.status()=="Running") {
+            System.out.println("MySQL сервер запущен");
+        }
+        while(true) {
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine();
+            if(input.equals("stop")) {
+                apache.shutdown();
+                mysql.shutdown();
+                System.exit(0);
+            }
+        }
